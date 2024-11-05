@@ -78,3 +78,39 @@ VALUES
 (10, 10, '23-09-2024', '14:00:00', '27-09-2024', '12:30:00');
 
 SELECT * FROM reservas;
+
+/*  consulta que liste apenas os hóspedes que já finalizaram suas estadias, mostrando o nome do hóspede, o número do quarto, a data de início da reserva e a data de término */
+SELECT r.id_reserva, h.nome, h.CPF, q.n_quarto, q.andar, q.tipo, r.data_entrada, r.hora_entrada, r.data_saida, r.hora_saida
+FROM reservas r
+JOIN hospedes h ON r.id_hospede = h.id_hospede
+JOIN quartos q ON r.id_quarto = q.id_quarto
+WHERE r.data_saida < CURRENT_DATE;
+
+
+
+INSERT INTO hospedes (nome, telefone, email, CPF)
+VALUES
+('Laura Violla', '(19) 76593-8877', 'laura.violla@gmail.com', '923.446.789-01'),
+('Evelyn Oliveira', '(11) 97354-3610', 'evelyn.oliveira@gmail.com', '734.587.890-11'),
+('Ediana Ferreira', '(21) 99875-5635', 'ediana.ferreira@gmail.com', '355.677.901-82');
+
+INSERT INTO reservas (id_hospede, id_quarto, data_entrada, hora_entrada, data_saida, hora_saida)
+VALUES
+(11, 9, '05-11-2024', '09:00:00', '08-11-2024', '12:00:00'),
+(12, 7, '05-11-2024', '09:00:00', '08-11-2024', '12:00:00'),
+(13, 14, '05-11-2024', '09:00:00', '08-11-2024', '12:00:00');
+
+
+
+/* consulta para mostrar todos os hóspedes, incluindo aqueles que ainda estão com reservas ativas */
+SELECT r.id_reserva, h.nome, h.CPF, q.n_quarto, q.andar, q.tipo, r.data_entrada, r.hora_entrada, r.data_saida, r.hora_saida
+FROM reservas r
+JOIN hospedes h ON r.id_hospede = h.id_hospede
+JOIN quartos q ON r.id_quarto = q.id_quarto;
+
+
+/* consulta que mostre apenas os quartos que não foram reservados ainda */
+SELECT q.n_quarto, q.andar
+FROM quartos q
+LEFT JOIN reservas r ON q.id_quarto = r.id_quarto
+WHERE r.id_reserva IS NULL;
